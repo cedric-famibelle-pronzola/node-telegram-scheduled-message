@@ -4,10 +4,15 @@ require('dotenv').config()
 const cron = require('node-cron')
 const express = require('express')
 const morgan = require('morgan')
+const {readHtml} = require('./util/read')
+const {sendMessage} = require('./util/send-message')
 
-function sendWithCron() {
-  cron.schedule('*/10 * * * * *', () => {
-    console.log('running a task every 10 second')
+const cronConfig = process.env.CRON_CONFIG || '0 17 * * SUN' // Every sunday at 5 PM (GMT)
+
+async function sendWithCron() {
+  const file = await readHtml('networks.html')
+  cron.schedule(cronConfig, async () => {
+    await sendMessage(file)
   })
 }
 
@@ -21,7 +26,7 @@ async function main() {
 
   app.listen(port)
 
-  sendWithCron()
+  await sendWithCron()
 }
 
 main().catch(error => {
