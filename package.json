@@ -7,7 +7,7 @@
     "start": "node server",
     "lint": "xo"
   },
-  "author": "ced",
+  "author": "cedric",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.4",
